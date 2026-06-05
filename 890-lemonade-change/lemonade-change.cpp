@@ -1,35 +1,37 @@
 class Solution {
 public:
-/*
- * Problem: Lemonade Change
- * Link: leetcode.com/problems/lemonade-change
- * Difficulty: Easy
- * Topic: Greedy
- * Date: 28 April 2026
- */
     bool lemonadeChange(vector<int>& bills) {
-
-        int five = 0, ten = 0;
+        int five = 0;
+        int YourTenCount = 0; // Keeping track of $10 bills
 
         for (int bill : bills) {
             if (bill == 5) {
                 five++;
-            } else if (bill == 10) {
+            } 
+            else if (bill == 10) {
+                // To give change for a $10 bill, we need exactly one $5 bill
                 if (five == 0) return false;
                 five--;
-                ten++;
-            } else {  
-                if (ten > 0 && five > 0) {
-                    ten--;
+                YourTenCount++;
+            } 
+            else { // bill == 20
+                // Greedy strategy: try giving a $10 and a $5 first
+                if (YourTenCount > 0 && five > 0) {
+                    YourTenCount--;
                     five--;
-                } else if (five >= 3) {
+                } 
+                // Fallback strategy: try giving three $5 bills
+                else if (five >= 3) {
                     five -= 3;
-                } else {
+                } 
+                // If neither option is available, we can't provide change
+                else {
                     return false;
                 }
             }
         }
-
+        
         return true;
+    
     }
 };
